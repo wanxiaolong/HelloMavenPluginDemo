@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.demo</groupId>
+    <artifactId>HelloMavenPluginDemo</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <!-- packaging必须是maven-plugin -->
+    <packaging>maven-plugin</packaging>
+
+    <properties>
+        <!-- 指定maven编译的jdk版本，这是为了消除以下错误：
+        [ERROR] 不再支持源选项 5。请使用 6 或更高版本。
+        [ERROR] 不再支持目标选项 1.5。请使用 1.6 或更高版本。-->
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+
+        <!-- 指定文件编码是为了消除以下警告(本插件中有文件处理，不指定就会有以下警告)：
+        [WARNING] Using platform encoding (UTF-8 actually) to copy filtered resources
+        [WARNING] File encoding has not been set, using platform encoding UTF-8  -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <!--plugin插件api-->
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-plugin-api</artifactId>
+            <version>2.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!--加入此包就可以使用@Mojo注解-->
+        <dependency>
+            <groupId>org.apache.maven.plugin-tools</groupId>
+            <artifactId>maven-plugin-annotations</artifactId>
+            <version>3.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!--用户获取运行本插件的Maven工程信息。非必须，只是本例中用到了MavenProject对象-->
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-core</artifactId>
+            <version>3.8.6</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!--  引入这个插件是为了消除以下错误：
+             descriptor failed: Index 9322 out of bounds for length 221
+             参考：https://stackoverflow.com/questions/60861485  -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-plugin-plugin</artifactId>
+                <version>3.6.4</version>
+            </plugin>
+        </plugins>
+    </build>
+</project>

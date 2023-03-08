@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-//处理类还需要增加@Mojo注解，来标示其为一个Mojo类
+//处理类还需要增加@Mojo注解，来标示其为一个Mojo类(即<plugin>中的<goal>)
 @Mojo(name = "hello",requiresDependencyResolution = ResolutionScope.COMPILE)
 //处理类需要继承 AbstractMojo，并实现execute()方法，execute()就是我们实际执行的操作
 public class HelloMojo extends AbstractMojo {
@@ -27,6 +27,8 @@ public class HelloMojo extends AbstractMojo {
     private String greeting;
 
     //也可以使用表达式来获取参数，如下是调用MavenSession.getCurrentProject()来获取当前工程
+    //可用的表达式请参见：
+    //https://maven.apache.org/ref/3.6.3/maven-core/apidocs/org/apache/maven/plugin/PluginParameterExpressionEvaluator.html
     @Parameter(defaultValue = "${project}")
     private MavenProject mavenProject;
 
@@ -56,7 +58,6 @@ public class HelloMojo extends AbstractMojo {
             String format = dateFormat.format(date);
             log.info("  - " + file.getName() + ", lastModified=" + format);
         }
-
         log.info("<==========河神说: Hello Mojo End============>" + greeting);
     }
 
